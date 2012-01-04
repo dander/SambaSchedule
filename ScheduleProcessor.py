@@ -50,10 +50,32 @@ class Match(object):
 
     def __str__(self):
         return "{0}(dark) vs {1}(white) @ {2}".format(
-            self.dark, self.white, self.time.strftime("%a, %x %I:%M%p"))
+            self.dark, self.white, self.formatted_time())
 
     def __repr__(self):
         return str(self)
+
+    def color(self, my_name):
+        if self.white == my_name:
+            return 'White'
+        elif self.dark == my_name:
+            return 'Dark'
+        else:
+            return None
+
+    def opponent(self, my_name):
+        if self.white == my_name:
+            return self.dark
+        elif self.dark == my_name:
+            return self.white
+        else:
+            return None
+
+    def formatted_time(self):
+        return self.time.strftime("%a, %x %I:%M%p")
+
+    def contains_team(self, team_name):
+        return self.white == team_name or self.dark == team_name
 
 def eventFromMatch(match, team, reminder=None):
     if team == None:

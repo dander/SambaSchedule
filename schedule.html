@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title></title>
+</head>
+<body>
+<h1>Schedule for '{{ team_name }}'</h1>
+<br>
+<table style="text-align: left; width: 848px; height: 32px;" border="0"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th>Time</th>
+      <th>Shirt Color</th>
+      <th>Opponent</th>
+    </tr>
+{% for game in games %}
+    <tr>
+      <td>{{ game.time }}</td>
+      <td>{{ game.color }}</td>
+      <td>{{ game.opponent }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+<br>
+Import the schedule as an <a
+ href="{{ team_name }}/calendar.ics">icalendar</a>.<br>
+</body>
+</html>
