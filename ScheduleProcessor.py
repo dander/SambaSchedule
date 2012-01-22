@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+import logging
+
 from BeautifulSoup import BeautifulSoup
 from icalendar import Calendar, Event
-import logging
+from pacific_tzinfo import Pacific
 
 def processPage(html):
     soup = BeautifulSoup(html, convertEntities=BeautifulSoup.HTML_ENTITIES)
@@ -38,15 +40,18 @@ def parseMatch(line, date):
         logging.debug('dark = {0}'.format(dark))
         white = teams[1].strip()
         logging.debug('white = {0}'.format(white))
-        return Match(time = datetime.combine(date, time),
-                     dark = dark,
-                     white = white)
+        return Match(dark = dark,
+                     white = white,
+                     time = datetime.combine(date, time)
+                                    .replace(tzinfo=Pacific))
     except:
         return None
 
 class Match(object):
-    def __init__(self, **kwds):
-        self.__dict__.update(kwds)
+    def __init__(self, time, dark, white):
+        self.dark = dark
+        self.white = white
+        self.time = time
 
     def __str__(self):
         return "{0}(dark) vs {1}(white) @ {2}".format(
