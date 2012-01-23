@@ -103,6 +103,8 @@ def eventFromMatch(match, team, reminder=None):
 
 def calendarFromMatches(matches, team):
     cal = Calendar()
+    cal.add('version', '2.0')
+    cal.add('prodid', '-//com//appspot//SambaSchedule//')
     for match in matches:
         evt = eventFromMatch(match, team)
         if evt:
