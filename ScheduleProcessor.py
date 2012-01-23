@@ -19,7 +19,7 @@ def processPage(html):
         else:
             match = parseMatch(line, date)
             logging.debug('parseMatch returned {0}'.format(match))
-            if match:
+            if match and match not in matches:
                 matches.append(match)
                 logging.debug('added match: {0}'.format(match))
     return matches
@@ -59,6 +59,11 @@ class Match(object):
 
     def __repr__(self):
         return str(self)
+
+    def __eq__(self, match):
+        return self.white == match.white and \
+               self.dark == match.dark and \
+               self.time == match.time
 
     def color(self, my_name):
         if self.white == my_name:
