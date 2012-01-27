@@ -1,9 +1,13 @@
 from datetime import datetime, timedelta
 import logging
+import re
 
 from BeautifulSoup import BeautifulSoup
 from icalendar import Calendar, Event
 from pacific_tzinfo import Pacific
+
+_date_expr = '\d\d/\d\d\/\d\d'
+_date_match = re.compile(_date_expr)
 
 def processPage(html):
     soup = BeautifulSoup(html, convertEntities=BeautifulSoup.HTML_ENTITIES)
@@ -26,7 +30,8 @@ def processPage(html):
 
 def parseDate(line):
     try:
-        return datetime.strptime(''.join(line.split()[:2]), '%A,%m/%d/%y')
+        datestr = _date_match.search(line).group()
+        return datetime.strptime(datestr, '%m/%d/%y')
     except:
         return None
 
@@ -121,6 +126,7 @@ if __name__ == '__main__':
     soup = BeautifulSoup(html, convertEntities=BeautifulSoup.HTML_ENTITIES)
     matchstr = '   8:45pm  Mad Samba                      vs Tuxedos'
     datestr = 'Tuesday, 12/20/11 (week 1/10)'
+    datestr2 = '--Tuesday, 02/07/12 (week 8/10)'
     d = parseDate(datestr)
     t = datetime.strptime('8:45pm', '%I:%M%p')
     matches = processPage(html)
