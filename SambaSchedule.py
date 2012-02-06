@@ -7,6 +7,7 @@ import jinja2
 from google.appengine.ext import db
 
 import ScheduleProcessor
+import CalendarGenerator
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -35,7 +36,7 @@ class TeamSchedule(webapp2.RequestHandler):
 class TeamCalendar(webapp2.RequestHandler):
     def get(self, team_name):
         self.response.out.write(
-            str(ScheduleProcessor.calendarFromMatches(matches, team_name)))
+            str(CalendarGenerator.calendarFromMatches(matches, team_name)))
 
 
 html = open('sample.html').read()

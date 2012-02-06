@@ -3,7 +3,6 @@ import logging
 import re
 
 from BeautifulSoup import BeautifulSoup
-from icalendar import Calendar, Event
 from pacific_tzinfo import Pacific
 
 _date_expr = '\d\d/\d\d\/\d\d'
@@ -92,35 +91,6 @@ class Match(object):
     def contains_team(self, team_name):
         return self.white == team_name or self.dark == team_name
 
-def eventFromMatch(match, team, reminder=None):
-    if team == None:
-        color = match.white + ' (white)'
-        opponent = match.dark + ' (dark)'
-    elif match.white == team:
-        color = 'White'
-        opponent = match.dark
-    elif match.dark == team:
-        color = 'Dark'
-        opponent = match.white
-    else:
-        return None
-
-    evt = Event()
-    evt.add('summary', 'Soccer - {0} vs. {1}'.format(color, opponent))
-    evt.add('dtstart', match.time)
-    evt.add('dtend', match.time + timedelta(hours = 1))
-    return evt
-
-def calendarFromMatches(matches, team):
-    cal = Calendar()
-    cal.add('version', '2.0')
-    cal.add('prodid', '-//com/appspot/SambaSchedule//NONSGML v1.0//EN')
-    for match in matches:
-        evt = eventFromMatch(match, team)
-        if evt:
-            cal.add_component(evt)
-    return cal
-
 if __name__ == '__main__':
     html = open('sample.html').read()
     soup = BeautifulSoup(html, convertEntities=BeautifulSoup.HTML_ENTITIES)
@@ -130,4 +100,3 @@ if __name__ == '__main__':
     d = parseDate(datestr)
     t = datetime.strptime('8:45pm', '%I:%M%p')
     matches = processPage(html)
-    cal = calendarFromMatches(matches, 'The Captain')
