@@ -35,9 +35,13 @@ class TeamSchedule(webapp2.RequestHandler):
 
 class TeamCalendar(webapp2.RequestHandler):
     def get(self, team_name):
+        try:
+            reminder = int(self.request.get('reminder'))
+        except:
+            reminder = None
         self.response.out.write(
-            str(CalendarGenerator.calendarFromMatches(matches, team_name)))
-
+            str(CalendarGenerator.calendarFromMatches(
+                matches, team_name, reminder)))
 
 html = open('sample.html').read()
 
