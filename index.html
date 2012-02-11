@@ -6,7 +6,7 @@
 </head>
 <body>
   {% for team in teams %}
-    <a href="{{ team }}">{{ team }}</a><br>
+    <a href="{{ url_format(team) }}">{{ team }}</a><br>
   {% endfor %}
 </body>
 </html>
